@@ -1,12 +1,11 @@
-import {BiLibrary} from 'react-icons/bi'
-import {BsFillEmojiSunglassesFill,BsFillMoonStarsFill} from 'react-icons/bs'
+import {BsFillEmojiSunglassesFill,BsFillMoonStarsFill} from 'react-icons/bs/index'
 import styles from './Navbar.module.scss'
 
 import { useState,useEffect,useRef } from 'react'
 
 const Navbar = () => {
 
-  const [isDark, setIsDark] = useState(localStorage.getItem('theme'))
+  const [isDark, setIsDark] = useState(localStorage.getItem('theme') || 'dark')
 
   const ref = useRef()
 
@@ -38,14 +37,14 @@ const Navbar = () => {
         <ul className={styles.navbarLinks}>
             <li>
                 <a href='/'>
-                  Blogs <BiLibrary />
+                  All Blogs
                 </a>  
             </li>
             <li>
 
                 <a href="#" >
                   {
-                    isDark === 'dark' ? <BsFillMoonStarsFill onClick={lightMode}  /> : <BsFillEmojiSunglassesFill onClick={darkMode} />
+                    isDark === 'light' ? <BsFillMoonStarsFill onClick={darkMode}  /> : <BsFillEmojiSunglassesFill onClick={lightMode} />
                   }
                 </a>
               

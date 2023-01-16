@@ -2,7 +2,6 @@
 import BaseHead from '../components/BaseHead.astro';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer.astro';
-import BlogFilter from '../components/BlogFilter';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
 
 // Use Astro.glob() to fetch all posts, and then sort them by date.
@@ -10,7 +9,27 @@ const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
 	(a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf()
 );
 
-
+const items = [
+    {
+      name : 'css',
+    //   icon : <FaCss3Alt />
+    },
+    {
+      name : 'javascript',
+    },
+    {
+      name : 'react',
+    },
+    {
+      name : 'sass',
+    },
+    
+    {name: 'nodejs',
+    },
+    {name : 'All',
+    }
+  ]
+const filteredPosts = []
 
 ---
 
@@ -23,6 +42,16 @@ const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
 		<Navbar client:load />
 		
 		<main>
+			<div
+      	class="blogFilter">
+       {items.map((item) => (
+         <div
+         class='filterItem' 
+         >
+          <span>{item.name}</span>
+         </div>
+       ))}
+      </div>
 			<!-- <BlogFilter posts={posts} client:load /> -->
 			<h1 class="main-title"> Recently Published</h1>
 			<section class="grid">
@@ -38,7 +67,7 @@ const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
 
 							<p class="time">
 							<time>
-								<!-- <FaCalendarAlt /> -->
+							
 								{new Date(post.frontmatter.pubDate).toLocaleDateString('en-us', {
 									year: 'numeric',
 									month: 'short',
@@ -63,5 +92,24 @@ const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
 
 		</main>
 		<Footer />
+
+		<script define:vars={{posts,filteredPosts}}>
+
+		const btns = document.querySelectorAll('.filterItem')
+
+
+		btns.forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			filterItems(e.target)
+		})
+		})
+
+		function filterItems(item) {
+            const newPosts = posts.filter(post => post.frontmatter.tags.includes(item.innerText.toLowerCase()))
+			filteredPosts.push(newPosts)
+          
+	}
+        
+</script>
 	</body>
 </html>
