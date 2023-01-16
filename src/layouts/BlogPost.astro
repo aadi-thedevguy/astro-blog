@@ -1,0 +1,45 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+	content: {
+		title: string;
+		description: string;
+		pubDate?: string;
+		heroImage?: string;
+		icon?: string;
+	};
+}
+
+const {
+	content: { title, description, pubDate, heroImage,icon },
+} = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} icon={icon} />
+	</head>
+
+	<body>
+		<Navbar client:load />
+		
+		<section class="section">
+			<header class="blog-header">
+				<h1>{title}</h1>
+				<p>Published on {pubDate} </p>
+				<img src={heroImage} alt="main" />
+			</header>
+			<article class="content">
+
+				<slot/>
+			</article>
+			<a href="/"> Back to Home</a>
+
+		</section>
+		
+		<Footer />
+	</body>
+</html>

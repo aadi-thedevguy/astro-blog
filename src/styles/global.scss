@@ -1,0 +1,208 @@
+@use 'sass:color';
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,500;1,400;1,600&family=PT+Sans&family=Quicksand:wght@400;500;700&display=swap');
+
+@import 'blogs.scss';
+
+/* variables */
+:root {
+  --gradientClr-1: #e5f7e1;
+  --gradientClr-2: #d1d7f8;
+
+  --Gradient: linear-gradient(45deg, var(--gradientClr-1), var(--gradientClr-2));
+
+  --red: #FA0F00;
+  --yellow: #FFDD00;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* scrollbar */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--gray-color);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 20px;
+  background: transparent;
+}
+
+/* custom defaults and resets */
+
+body {
+  --white: #ffffff;
+  --secondary-color: hsl(209, 78%, 73%);
+  --primary-color: hsl(207, 42%, 17%);
+  --text-primary: hsl(214, 32%, 51%);
+  --gray-color: hsl(0, 5%, 50%);
+  --black-color: #666666;
+
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  max-width: 100%;
+  background-color: var(--white);
+  color: var(--black-color);
+  text-align: center;
+  /* font-family: 'Nunito', sans-serif;
+  font-family: 'PT Sans', sans-serif; */
+  font-family: 'Quicksand', sans-serif;
+}
+
+body.dark {
+  --white: hsl(207, 42%, 17%);
+  --black-color : #ffffff;
+  --primary-color:  hsl(214, 32%, 51%);
+  --text-primary : hsl(209, 78%, 73%);
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a,
+button {
+  font-family: 'Nunito', sans-serif;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+section {
+  /* max-width: 800px; */
+  margin-inline: auto;
+  border-radius: .4rem;
+}
+
+h1,
+h2 {
+  text-transform: capitalize;
+  line-height: 1.25;
+  font-family: 'PT Sans', sans-serif;
+
+}
+
+p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.5;
+
+}
+
+input,
+textarea {
+  font-size: 1rem;
+  border: 0;
+  outline: none;
+  border-radius: .6rem;
+  padding: .5em 1em;
+  transition: 0.3s;
+  font-family: 'Nunito', sans-serif;
+
+}
+
+input::placeholder {
+  font-size: 1.2rem;
+  color: gray;
+}
+
+/* global classes */
+
+.btn {
+  padding: .3em .7em;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  border-radius: 1.5rem;
+  text-transform: capitalize;
+  letter-spacing: .1rem;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 500;
+  background: var(--primary-color);
+  color: var(--white);
+  transition: transform 0.3s ease-in;
+
+}
+
+main {
+  h1 {
+    margin-top: 2rem;
+    color:  var(--text-primary);
+    font-style: italic;
+  }
+}
+
+.grid {
+  width: clamp(16rem, 700px, 90%);
+  margin-inline: auto;
+  margin-block: 4rem;
+  padding-inline: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+}
+
+.article {
+  aspect-ratio: 5 / 2;
+  border-radius: 1rem;
+  box-shadow: 0 2px 10px 2px var(--gray-color);
+  background-image: var(--Gradient);
+
+
+  .time {
+    color: var(--gray-color);
+  }
+  
+  p {
+    color: #666666 ;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 1.2rem;
+  }
+
+  .container {
+    text-align: left;
+    padding: 2rem;
+    
+  }
+
+  .title {
+    padding-inline: 1.2rem;
+    word-wrap: break-word;
+    font-size: 1.8rem;
+    margin-bottom: 0;
+    color: var(--primary-color);
+    transition: all 0.2s ease-in;
+
+  &:hover {
+      color: var(--secondary-color);
+    }
+  }
+
+
+}

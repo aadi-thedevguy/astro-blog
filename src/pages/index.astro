@@ -1,0 +1,67 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer.astro';
+import BlogFilter from '../components/BlogFilter';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
+
+// Use Astro.glob() to fetch all posts, and then sort them by date.
+const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
+	(a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf()
+);
+
+
+
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Navbar client:load />
+		
+		<main>
+			<!-- <BlogFilter posts={posts} client:load /> -->
+			<h1 class="main-title"> Recently Published</h1>
+			<section class="grid">
+			{
+			posts.map((post) => (
+					
+				<article class="article">
+					<div class="container">
+						<div class="title">
+							<h3>
+								<a href={post.url}>{post.frontmatter.title}</a>
+							</h3>
+
+							<p class="time">
+							<time>
+								<!-- <FaCalendarAlt /> -->
+								{new Date(post.frontmatter.pubDate).toLocaleDateString('en-us', {
+									year: 'numeric',
+									month: 'short',
+									day: 'numeric',
+								})}
+							</time>
+							| {post.frontmatter.readingTime}
+							</p> 
+						<p>{post.frontmatter.description}</p>
+
+						<p style="color : var(--secondary-color)"><a href={post.url}> Read More <svg width="20" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg> </a></p>
+
+						</div>
+					<!--	<img src={post.frontmatter.heroImage} alt=""> -->
+					</div>
+			
+				</article>
+				
+			))
+			}
+		</section>
+
+		</main>
+		<Footer />
+	</body>
+</html>
