@@ -1,0 +1,77 @@
+---
+
+const items = [
+    {
+      name : 'css',
+    //   icon : <FaCss3Alt />
+    },
+    {
+      name : 'javascript',
+    },
+    {
+      name : 'react',
+    },
+    {
+      name : 'sass',
+    },
+    
+    {name: 'nodejs',
+    },
+    {name : 'All',
+    }
+  ]
+
+  const {posts} = Astro.props
+
+---
+
+
+<main>
+    <!-- <div
+      class="blogFilter">
+      {items.map((item) => (
+        <div
+        class='filterItem' 
+        >
+          <span>{item.name}</span>
+        </div>
+      ))}
+  </div> -->
+  <h1 class="main-title"> Recently Published</h1>
+  <section class="grid">
+    {
+    posts.map((post) => (
+            
+        <article class="article" id={post.frontmatter.tags}>
+            <div class="container">
+                <div class="title">
+                    <h3>
+                        <a href={post.url}>{post.frontmatter.title}</a>
+                    </h3>
+
+                    <p class="time">
+                    <time>
+                    
+                        {new Date(post.frontmatter.pubDate).toLocaleDateString('en-us', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                        })}
+                    </time>
+                    | {post.frontmatter.minutesRead}
+                    </p> 
+                <p>{post.frontmatter.description}</p>
+
+                <p style="color : var(--secondary-color)"><a href={post.url}> Read More <svg width="20" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg> </a></p>
+
+                </div>
+            <!--	<img src={post.frontmatter.heroImage} alt=""> -->
+            </div>
+    
+        </article>
+        
+    ))
+    }
+  </section>
+
+</main>

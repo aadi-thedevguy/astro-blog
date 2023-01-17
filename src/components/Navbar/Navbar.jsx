@@ -1,29 +1,36 @@
-import {BsFillEmojiSunglassesFill,BsFillMoonStarsFill} from 'react-icons/bs/index'
+import {BsFillEmojiSunglassesFill} from 'react-icons/bs/index'
+import {RiMoonClearFill} from 'react-icons/ri/index'
 import styles from './Navbar.module.scss'
 
 import { useState,useEffect,useRef } from 'react'
 
 const Navbar = () => {
 
-  const [isDark, setIsDark] = useState(localStorage.getItem('theme') || 'dark')
+  const [isDark, setIsDark] = useState(typeof localStorage !== 'undefined' && localStorage.getItem('theme') || 'light')
 
   const ref = useRef()
 
   const darkMode = () => {
     setIsDark('dark')
+
     ref.current.play()
   }
   const lightMode = () => {
     setIsDark('light')
+
     ref.current.play()
 
   }
 
   useEffect(() => {
     localStorage.setItem('theme',isDark)
-    document.body.className = isDark
-  }, [isDark])
-  
+
+    if (isDark === 'dark') {
+      document.body.classList.add('dark')
+    } else {
+    document.body.classList.remove('dark')
+    }
+  },[isDark])
 
   return (
 
@@ -44,7 +51,7 @@ const Navbar = () => {
 
                 <a href="#" >
                   {
-                    isDark === 'light' ? <BsFillMoonStarsFill onClick={darkMode}  /> : <BsFillEmojiSunglassesFill onClick={lightMode} />
+                    isDark === 'light' ? <RiMoonClearFill onClick={darkMode}  /> : <BsFillEmojiSunglassesFill onClick={lightMode} />
                   }
                 </a>
               

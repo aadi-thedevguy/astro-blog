@@ -6,7 +6,7 @@ description: 'Do you know that you can use Variables in Vanilla CSS without any 
 heroImage: '/images/custom-variables.webp'
 tags : 'css css-tips '
 icon : '/images/css_favicon.ico'
-readingTime: '4 minutes read'
+
 
 ---
 
@@ -15,6 +15,7 @@ Let's Find out How...
 
 But first, the question arises Why should you even use these Custom properties when You have Preprocessors?
 Well, Let's Answer that
+
 
 ## Why use CSS Custom Properties over SASS variables
 
@@ -34,15 +35,62 @@ So Basically, the custom properties are the variables of CSS which minimizes cod
 
 In normal CSS you have to redefine a property like colour or font repetitively for different elements and it is a hazard.
 
+```css
 
+/* What you SHOULDN'T do */
 
-![Code Snippet](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nddmv106hfwbgvpyzc3k.jpeg)
+body {
+    background : #333;
+    color : white;
+}
+
+h1 {
+    font-size : 3rem;
+}
+
+.element {
+    transition : transform 0.2s linear;
+}
+
+.element:hover {
+    transform : scale(1.2) rotate(45deg);
+}
+```
 
 Well not anymore, 
 Define once, use anywhere from now on.
 A custom property is written with a preceding `--` sign before its name with no spaces and called(used) with the `var()` keyword.
 
-![Code Snippet](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x8ep9wxv55a9gnk8rcqe.jpeg)
+```css
+
+/* What you SHOULD do */
+
+:root {
+    --bg-clr-primary : rgb(80,125,125);
+    --text-clr-primary : white;
+    --font-lg: 3rem;
+    --scale : 1.2;
+    --rotate : 45deg;
+    --full-screen : 100vw;
+}
+
+body {
+    background : var(--bg-clr-primary);
+    color : var(--text-clr-primary);
+}
+
+h1 {
+    font-size : var(--font-lg);
+}
+
+.element {
+    transition : transform 0.2s linear;
+}
+
+.element:hover {
+    transform : var(--scale) var(--rotate);
+}
+```
 
 ## Features of CSS Variables
 
@@ -51,7 +99,20 @@ One great benefit of Custom properties is that you can structure and combine dif
 
 Any value you can think of can be converted into a variable.
 
-![Code Snippet](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vu0z1hax6ze5oj3h5q54.jpeg)
+```css
+/* combine more than one custom properties together to give your more control */
+
+section {
+    --r : 220;
+    --g : 150;
+    --b : 94;
+}
+
+section div {
+    background-color : rgb(var(--r), var(--g), var(--b))
+}
+```
+
 
 2. **Redefining Your Variables:**
 An Environment is like a world within itself for a code block.
@@ -59,14 +120,57 @@ The Code within an environment doesn't care anything about anything outside its 
 
 With CSS variables, You can also redefine or change the value of a custom property with a new value within a specific element and it will work with that value in its local environment instead of the globally defined custom property.
 
-![Code Snippet](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kg9l5tfnvs8ywosyf9wt.jpeg)
+```css
+
+/* Redefine custom properties anywhere you want */
+
+/* create your own color scheme */
+section {
+    --r : 220;
+    --g : 150;
+    --b : 94;
+}
+
+section div {
+    background-color : rgb(var(--r), var(--g), var(--b))
+}
+
+/* THIS WORKS */
+
+section .container {
+    --g : 139;
+    --b : 53;
+    background-color : rgb(var(--r), var(--g), var(--b))
+}
+```
 
 1. **Using `calc()` function with your variables:**
 The `calc()` function can perform basic mathematical operations in CSS.
 Make your whole layout responsive by using it with predefined custom properties which helps in structuring the sizes of your elements.
 
 
-![Code Snippet](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mn8fxj6cvwlvzenb5byu.jpg)
+```css
+
+/* Calculate and adjust your layout sizes */
+/* With the help of predefined properties and calc() function */
+
+h1 {
+    font-size : var(--font-lg);
+}
+
+/* All size units just works with calc() */
+h2 {
+    font-size : calc(var(--font-lg) / 2);
+}
+
+.parent {
+    width : var(--full-screen);
+}
+
+.child {
+    width : calc(var(--full-screen) - 6rem)
+}
+```
 
 #### This blog was just an introduction to the awesomeness of CSS variables. 
 
