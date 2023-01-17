@@ -1,5 +1,5 @@
 import {BsFillEmojiSunglassesFill} from 'react-icons/bs/index'
-import {RiMoonClearFill} from 'react-icons/ri/index'
+import {RiMoonClearFill,RiHome5Fill} from 'react-icons/ri/index'
 import styles from './Navbar.module.scss'
 
 import { useState,useEffect,useRef } from 'react'
@@ -37,14 +37,17 @@ const Navbar = () => {
 <nav className={styles.navbar}>
 <audio ref={ref} src="/correct.mp3"></audio>
     
-        <a href='https://thedevguy.in' target="_blank" rel="noreferrer" className={styles.navbarLogo} >
-            <img src="/images/logo.svg" alt="logo" width={50} height={40} />
-        </a>
 
         <ul className={styles.navbarLinks}>
+          <li>
+
+            <a href='https://thedevguy.in' target="_blank" rel="noreferrer" className={styles.navbarLogo} >
+                <img src="/images/logo.svg" alt="logo" width={50} height={40} />
+            </a>
+          </li>
             <li>
                 <a href='/'>
-                  All Blogs
+                  Home <RiHome5Fill />
                 </a>  
             </li>
             <li>

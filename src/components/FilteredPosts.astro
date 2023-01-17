@@ -27,17 +27,17 @@ const items = [
 
 
 <main>
-    <!-- <div
-      class="blogFilter">
-      {items.map((item) => (
-        <div
-        class='filterItem' 
-        >
-          <span>{item.name}</span>
-        </div>
-      ))}
-  </div> -->
-  <h1 class="main-title"> Recently Published</h1>
+  <h1 class="main-title"> Stuff I Write About</h1>
+  <div
+    class="blogFilter">
+    {items.map((item) => (
+      <div
+      class='filterItem' 
+      >
+        <span>{item.name}</span>
+      </div>
+    ))}
+</div>
   <section class="grid">
     {
     posts.map((post) => (
