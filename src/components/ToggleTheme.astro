@@ -1,0 +1,43 @@
+
+
+<div class="toggle">
+    <div class="ball"></div>
+    
+</div>
+<audio  src="/correct.mp3"></audio>
+
+<script is:inline>
+    const audio = document.querySelector('audio')
+    const btn = document.querySelector('.toggle')
+    const html = document.body
+    const theme = (() => {
+        if (typeof localStorage !== "undefined" &&
+            localStorage.getItem("theme")) {
+            return localStorage.getItem("theme");
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            return "dark";
+        }
+        return "light";
+    })();
+
+    if (theme === "light") {
+        html.classList.remove("dark");
+    } else {
+        html.classList.add("dark");
+    }
+
+    
+    btn.addEventListener('click',(e) => {
+        let toggleTheme = localStorage.getItem('theme')
+        if (toggleTheme === "light") {
+            html.classList.add("dark");
+            localStorage.setItem('theme', 'dark')
+        } else {
+            html.classList.remove("dark");
+            localStorage.setItem('theme', 'light')
+        }
+        audio.play()
+        
+    })
+</script>

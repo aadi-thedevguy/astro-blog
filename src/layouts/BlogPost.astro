@@ -1,7 +1,7 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Navbar from '../components/Navbar/Navbar';
-import Footer from '../components/Footer.astro';
+import BaseHead from "../components/BaseHead.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
 
 export interface Props {
 	content: {
@@ -14,7 +14,7 @@ export interface Props {
 }
 
 const {
-	content: { title, description, pubDate, heroImage,icon },
+	content: { title, description, pubDate, heroImage, icon },
 } = Astro.props;
 ---
 
@@ -24,22 +24,20 @@ const {
 	</head>
 
 	<body>
-		<Navbar client:only="react" />
-		
+		<Navbar />
+
 		<section class="section">
 			<header class="blog-header">
 				<h1>{title}</h1>
-				<p>Published on {pubDate} </p>
+				<p>Published on {pubDate}</p>
 				<img src={heroImage} alt="main" />
 			</header>
 			<article class="content">
-
-				<slot/>
+				<slot />
 			</article>
 			<a href="/"> Back to Home</a>
-
 		</section>
-		
+
 		<Footer />
 	</body>
 </html>

@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,500;1,400;1,600&family=PT+Sans&family=Quicksand:wght@400;500;700&display=swap');
 
 @import 'blogs.scss';
+@import 'header.scss';
 
 /* variables */
 :root {
@@ -157,6 +158,8 @@ main {
     font-style: italic;
   }
 }
+
+
 
 .grid {
   width: clamp(300px, 700px, 90%);

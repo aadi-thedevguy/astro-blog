@@ -1,0 +1,25 @@
+---
+import ToggleTheme from "./ToggleTheme.astro";
+
+---
+
+<nav class="navbar">    
+
+    <ul class="navbarLinks">
+      <li>
+
+        <a href='https://thedevguy.in' target="_blank" rel="noreferrer" class="navbarLogo" >
+            <img src="/images/logo.svg" alt="logo" width={50} height={40} />
+        </a>
+      </li>
+        <li>
+            <a href='/'>
+              All Blogs
+            </a>  
+        </li>
+        <li>
+            <ToggleTheme />
+        </li>
+     
+    </ul>
+</nav>
