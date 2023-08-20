@@ -1,0 +1,211 @@
+---
+layout: "../../layouts/BlogPost.astro"
+title: "Exploring Useful JavaScript DOM Features"
+pubDate: "March 24 2022"
+description: "One of the main elements of JavaScript DOM is the global Window Object."
+heroImage: "/images/window-obj.webp"
+tags: "javascript DOM"
+icon: "/images/js_favicon.ico"
+---
+
+One of the key elements of JavaScript DOM is the global Window Object. It provides a wide range of methods and objects that can be incredibly useful for web developers. In this article, we will explore some of the most frequently used features of the Window Object that can greatly enhance your coding experience.
+
+## 1. setTimeout() :
+The first method we will discuss is `setTimeout()`. This method allows you to execute a function after a specified delay. It takes two arguments: a callback function and a time in milliseconds.
+Imagine if you have to display a success or error modal after submitting a Form after a certain period or if you are just working on a Project Locally and want to imitate a fetch request from an API. Well, the **setTimeout()** method is the way to go.
+
+```javascript
+setTimeout(customTheme, 5000);
+
+function customTheme() {
+  confirm("Did not like out Themes,Want to Create Your Own ?");
+  let color = prompt("Just Type the name of color You want");
+
+  if (color === null) return;
+  document.body.style.backgroundColor = color;
+  toggleButton.style.display = "none";
+  headingText.textContent = "custom theme is active now";
+}
+```
+In the given example, after a page is loaded, the customTheme() function is called after a 5-second delay. It displays a confirmation modal and prompts the user to input a color to change the website's background. If a valid color is entered, it applies the color, hides a toggle button, and updates the heading text.
+
+
+## 2. setInterval() :
+
+Often, we need to repeatedly execute a function at specific intervals. For such scenarios, `setInterval()` comes to our rescue. 
+This method takes a function and the interval at which the function should be executed. 
+
+But what if you want to stop the function after certain intervals?
+Well, there's also a method for just that. The `clearInterval()` takes the timer or basically a variable in which the value of `setInterval()` is stored and stops/clears the function inside setInterval().
+
+```javascript
+let startTime;
+
+function startTimer() {
+  timerElement.innerText = 0;
+  startTime = new Date();
+  setInterval(() => {
+    // the getTimertime() function just increments
+    // time by 1
+    timerElement.innerText = getTimertime();
+  }, 1000);
+}
+```
+ In the above example, the `startTimer()` function initializes a timer. It sets the initial value of the timer element to 0 and starts a `setInterval()` function. This `setInterval()` function updates the timer element every second by calling the `getTimerTime()` function.
+
+**NOTE:** However, it is important to note that `setInterval()` may not be precise due to the execution time of the function it calls. To achieve more precise delays at regular intervals, it is recommended to use a nested `setTimeout()` function instead. For a detailed explanation of the differences and use cases, refer to [this article](https://javascript.info/settimeout-setinterval#nested-settimeout):
+
+
+## 3. scrollTo() :
+
+One of the most Used window methods. No website today is complete without a Back to Top button. I mean who doesn't love one such button at the footer of a website which when clicked saves you the hazard to use the Scrollbar to get back to the top of the Page. Also, it makes navigating through different sections of your website easy and neat which also increases the User-Experience. With `scrollTo()`, you can implement this functionality with a single line.
+The method takes two arguments, the X and Y (horizontal and vertical) coordinates of where you want to scroll to on the page.
+the value cannot be negative.
+Use this with
+
+```css
+html {
+  scroll-behavior: smooth;
+}
+```
+
+in your CSS for enabling smooth scrolling and you are good to go.
+
+```javascript
+
+btn.onclick = {
+    scrollTo(0,0)
+    // scrollTo(x,y)
+}
+
+```
+
+The above example shows a button which takes the user to the top of the Page when clicked.
+
+## 4. Window.open() / Window.close()
+
+The `open()` method of the Window Object is used to open a new browser window or tab. It takes the following parameters:
+- **url (optional):** The URL of the page to be opened. If not specified, an empty window will be opened.
+- **name (optional):** The name of the window or tab. It can be used as a target for links and form submissions. If not specified, a new window will be opened with a default name.
+- **features (optional):** A string of window features such as size, position, and toolbar visibility. These features are comma-separated and can be combined.
+
+```javascript
+function openNewWindow() {
+  window.open("https://www.example.com", "_blank", "width=800,height=600");
+}
+
+```
+ In the above example, the `openNewWindow()` function is called when a button is clicked. It uses the `open()` method to open a new browser window or tab with the URL https://www.example.com The `"_blank"` parameter specifies that the page should be opened in a new tab, and the `"width=800,height=600"` parameter sets the size of the new window.
+ You can also pass an argument as `popup` to it and it will open the new window in a popup like fashion just like how Google OAuth does it.
+
+ Similar to the `open()` method `window.close()` method of the Window Object is used to close the current browser window or tab.
+ 
+```javascript
+function closeWindow() {
+  window.close();
+}
+
+```
+
+ I know we are talking about methods, but the next one is an object
+
+## 5. Location Object:
+The location object provides information about the current URL and allows you to navigate to different URLs. It contains properties and methods that can be used to manipulate the browser's location.
+
+#### Properties:
+**href:** Returns the complete URL of the current page.
+
+```javascript
+console.log(window.location.href); 
+// Output: "https://www.example.com/index.html"
+```
+
+**host:** Returns the hostname and port number of the current page.
+```javascript
+console.log(window.location.host); 
+// Output: "www.example.com"
+```
+
+**protocol:** Returns the protocol `(http:// or https://)` of the current page.
+```javascript
+console.log(window.location.protocol); 
+// Output: "https:"
+
+```
+
+**pathname:** Returns the path and filename of the current page.
+```javascript
+console.log(window.location.pathname);
+ // Output: "/index.html"
+```
+
+**search:** Returns the query string of the current page.
+```javascript
+console.log(window.location.search);
+ // Output: "?id=123&category=books"
+```
+
+**hash:** Returns the anchor part of the URL.
+```javascript
+console.log(window.location.hash); 
+// Output: "#section1"
+```
+
+<br />
+#### Methods:
+
+**assign(url):** Loads a new document by setting the href property to the specified URL.
+```javascript
+function redirectToNewPage() {
+  window.location.assign("https://www.example.com/newpage.html");
+}
+```
+
+**reload():** Reloads the current document.
+```javascript
+function reloadPage() {
+  window.location.reload();
+}
+```
+
+**replace(url):** Replaces the current document with a new one by setting the href property to the specified URL
+```javascript
+function replacePage() {
+  window.location.replace("https://www.example.com/anotherpage.html");
+}
+```
+<br />
+
+## 6. Local Storage
+
+This last one is also an Object with very useful methods.
+How many times have you got your UI changes destroyed (removed) after reloading the Page?
+All your data with your hard work to make the app work, Gone.
+Therefore if you want to persist with the changes you made to your website even after you reload the website, you'll need this object method. Like all Objects _localStorage_ stores key-value pairs and almost all object methods work on it like any other plain Object.
+It mainly uses two methods which are `localStorage.setItem()` and `localStorage.setItem()` to save and retrieve a value from the **localStorage** Object. The Earlier takes key and value as arguments while the latter only takes the key. The keys and values stored in the localStorage object can only be strings. So if you want to store objects within the localStorage you can use the **JSON.stringify()** method like below :
+
+```javascript
+localStorage.user = JSON.stringify({ name: "John" });
+
+// retrieving data from localStorage
+let user = JSON.parse(localStorage.user);
+console.log(user.name); // John
+```
+The above code sets a value in the local storage by assigning a stringified JSON object to the "user" key. To retrieve the data, the JSON.parse() method is used to parse the stored value. In this case, the "name" property of the user object is displayed in the console.
+
+There's also a `localStorage.removeItem(key)` which removes a specific item from the storage by its key.
+Additionally, you can also clear the localStorage by calling `localStorage.clear()` to empty all the data in our localStorage
+
+```javascript
+// removing specific data by it's key
+localStorage.removeItem("token")
+
+// clearing our local storage
+localStorage.clear()
+```
+The Best Use Case for using localStorage in Authenticating User on the Frontend. You could just save an Authorization Token sent from an API to the localStorage and Retrieve it later from the minimum 2MB storage space that all modern browsers provide today.
+
+
+
+The **Window** Object offers a plethora of features to enhance JavaScript DOM programming. In this article, we covered some of the most useful methods. By leveraging these features, you can create more interactive and user-friendly web applications. Stay tuned for future articles where we dive deeper into the magical world of the Window Object.
+Till then,

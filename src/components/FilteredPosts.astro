@@ -1,16 +1,17 @@
 ---
 const { posts } = Astro.props;
+
+const topics = ["css","javascript","sass","nodejs","reactjs","nextjs","all"]
 ---
 
 <main data-main>
   <h1 class="main-title">Stuff I Write About</h1>
   <div class="blogFilter">
-    <button class="filterItem">css</button>
-    <button class="filterItem">javascript</button>
-    <button class="filterItem">sass</button>
-    <button class="filterItem">nodejs</button>
-    <button class="filterItem">reactjs</button>
-    <button class="filterItem">all</button>
+    {
+      topics.map(topic => (
+        <button class="filterItem">{topic}</button>
+      ))
+    }
   </div>
   <section class="grid"></section>
 
@@ -19,20 +20,18 @@ const { posts } = Astro.props;
 
     createArticle(posts);
 
-    filters.forEach(filter => {
-      filter.classList.remove('active')
-      filter.addEventListener("click", (e) => {
+   filters.forEach(filter => {
+  filter.addEventListener("click", (e) => {
+    // Remove active class and styles from previous item
+    filters.forEach(f => f.classList.remove('active'));
+    
+    // Add active class to the clicked item
+    e.target.classList.add("active");
 
-        if (e.target.classList.contains("active")) {
-          e.target.classList.remove("active");
-        } else {
+    filterPosts(e.target.textContent);
+  });
+});
 
-          e.target.classList.add("active");
-        }
-        
-        filterPosts(e.target.textContent);
-      });
-    });
 
     function filterPosts(item) {
       if (item.trim().toLowerCase() === "all") {

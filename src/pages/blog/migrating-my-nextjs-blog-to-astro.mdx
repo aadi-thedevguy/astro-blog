@@ -1,0 +1,285 @@
+---
+layout: "../../layouts/BlogPost.astro"
+title: 'How I migrated my NextJS Blog to Astro over a Weekend'
+pubDate: 'Aug 15 2022'
+description: 'Why you should move your Content Heavy Websites to Astro'
+heroImage: '/images/next-blog.webp'
+tags : 'nextjs astrojs mdx reactjs'
+icon : '/images/next-blog.webp'
+---
+
+Migrating a blog from one framework to another can be a daunting task. In this blog, I will share my experience of migrating my Next.js blog to Astro and discuss the challenges I faced along the way. I will also provide insights into whether you should consider migrating your blog to Astro or not.
+
+## The Why:
+First of all, for all the React Haters Out there, I love React and I loveee NextJS. It's just that it is an overkill for a content heavy website.
+But When I build my blog for the first time, I wasn't aware of this (Poor Me).
+So I spent about a Week just to add a Blog Page to my portfolio Website that too because of the Huge Ecosystem of React Libraries and although it looked good and was functional, it wasn't the fastest solution.
+You can still check it out on [https://thedevguy-blog.netlify.app/](https://thedevguy-blog.netlify.app/).
+
+BUT as I've said it took a WEEK to Achieve this and it was fast but it wasn't the fastest.
+OH and there were <strike>Some</strike> <b>Many</b> Problems that I'll discuss in this blog.
+So Anyway I decided it was time to "break up and move on".
+
+## The Idea:
+But Break Up is HARD and Moving On is HARDER. After all You were accustomed to your Partner and Finding a New One who lets you do the things You Like (pun intended) was not easy. So I started looking for the next best thing.
+I had been hearing a lot of buzz about the upcoming framework called Astro, which had recently hit version 1.
+Intrigued by its promises of Using **The framework of your Choice**,I decided to give it a try, hoping that I could achieve the same functionality but with better performance as Next.js and a simpler setup., it's a win-win for me. Little did I know that the experience would be fantastic, 
+and I would complete the migration in just a weekend (after spending a week reading the Astro documentation, of course).
+
+## The Challenges with a NextJS Blog:
+- **NextJS Hates MDX :** Now, that may be too harsh but seriously, NextJS is not very fond of markdown files. It treats them as any other data files, so you have to do SOOO MUCH mumbo - jumbo to read your markdown files with the `fs` module , remove it's extensions ,get it's raw data, generate the slug for each file from the file names, convert the raw content to valid html and then embed it into your MDX components.
+On top of that, i have to use the `gray-matter` npm package to insert and parse frontmatter (metadata like title, publishedAt etc.) to and from my markdown files. The `reading-time` package to generate reading Time, `next-mdx-remote` and
+`next-mdx-remote/serialize` to display the generated html into my components which i always find totally unnecessary
+
+You can look at the disaster below from my `utils/mdx.js` file that i have to create for above purposes :
+
+```javascript
+import path from 'path'
+import fs from 'fs'
+import matter from 'gray-matter'
+import readingTime from 'reading-time'
+import { sync } from 'glob'
+
+const articlesPath = 'data/articles'
+
+export async function getSlug() {
+  const paths = sync(`${articlesPath}/*.mdx`)
+  
+  const slug = paths.map((path) => {
+      // holds the paths to the directory of the article
+      const pathContent = path.split('/')
+      const fileName = pathContent[pathContent.length - 1]
+
+      const [slug, _extension] = fileName.split('.')
+      
+      return slug
+  })
+  return slug
+}
+
+
+export async function getArticleFromSlug(slug) {
+    const articleDir = path.join(articlesPath, `${slug}.mdx`)
+    const source = fs.readFileSync(articleDir)
+    const { content, data } = matter(source)
+  
+    return {
+      content,
+      frontmatter: {
+        slug,
+        excerpt: data.excerpt,
+        title: data.title,
+        publishedAt: data.publishedAt,
+        readingTime: readingTime(source).text,
+        ...data,
+      },
+    }
+  }
+
+  export async function getAllArticles() {
+    const articles = fs.readdirSync(path.join(process.cwd(), 'data/articles'))
+  
+    return articles.reduce((allArticles, articleSlug) => {
+      // get parsed data from mdx files in the "articles" dir
+      const source = fs.readFileSync(
+        path.join(process.cwd(), 'data/articles', articleSlug),
+        'utf-8'
+      )
+      const { data } = matter(source)
+  
+      return [
+        {
+          ...data,
+          slug: articleSlug.replace('.mdx', ''),
+          readingTime: readingTime(source).text,
+        },
+        ...allArticles,
+      ]
+    }, [])
+  }
+```
+
+- **Syntax Highlighting is Hard :** So I use a lot of custom code snippets in my blogs and i want basic Syntax Highlighting for them, but for this purpose, you have to use `remark and rehpye` plugins to get stuff into place, which can take a lot of configuration and time for basic Syntax Highlighting
+
+```javascript
+import React from 'react'
+import Head from 'next/head'
+import {getSlug, getArticleFromSlug} from '../../utils/mdx'
+import styles from '../../components/Blog.module.scss'
+
+import {ProgressBar} from 'scrolling-based-progressbar'
+import dayjs from 'dayjs'
+import { MDXRemote } from 'next-mdx-remote'
+import { serialize } from 'next-mdx-remote/serialize'
+
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeSlug from 'rehype-slug'
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
+
+
+function BlogPost({post : { source, frontmatter }}) {
+
+  return (
+    <>
+    <ProgressBar height="6px" color="var(--primary-color)"  />
+      
+      <Head> 
+        <title>{frontmatter.title}</title>
+        <meta name='description' content={frontmatter.excerpt} />
+        <link rel="icon" type='image/vnd.microsoft.icon' href={frontmatter.icon} />
+        
+      </Head>
+      <article className={styles.container}>
+        <div className={styles.cover}>
+
+        {/* <Image  src={`${frontmatter.cover_image}`} width={500} height={300} loading="lazy" /> */}
+        </div>
+        <header>
+          <h1>{frontmatter.title}</h1>
+          <p>
+            {dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')}
+            
+          </p>
+
+        </header>
+        <div className={styles.content}>
+          <MDXRemote {...source}/>
+        </div>
+      </article>
+    </>
+  )
+}
+
+export default BlogPost
+
+// dynamically generate the slugs for each article(s)
+
+export async function getStaticPaths() {
+    // getting all paths of each article as an array of objects with their unique slugs
+    const paths = (await getSlug()).map(slug => ({ params: { slug } }))
+  
+    return {
+      paths,
+      // in situations where you try to access a path
+      // that does not exist. it'll return a 404 page
+      fallback: false,
+    }
+  }
+
+export async function getStaticProps({ params }) {
+  //fetch the particular file based on the slug
+  const { slug } = params
+  const { content, frontmatter } = await getArticleFromSlug(slug)
+
+  const optionsObj = {
+    rehypePlugins: [
+      rehypeSlug,
+      rehypeHighlight,
+      [
+        rehypeAutolinkHeadings,
+        { behaviour: 'wrap' },
+      ],
+    ],
+  }
+
+  const mdxSource = await serialize(content, {
+    mdxOptions: optionsObj,
+    parseFrontmatter: true,
+  })
+
+    return {
+        props : {
+
+            post: {
+                source: mdxSource,
+                frontmatter,
+              },
+        }
+    }
+}
+```
+
+- And Even after going through all of this because react has to hydrate the page if you want any kind of interactivity , the performance is not optimal.
+
+
+## How Astro Solves This :
+1. **It's just javascript:** The best thing about Astro is that it's just plain old JavaScript and not framework-specific. This means that even beginners can write features in normal JS or use any JS library from the thousands of available npm packages, based on their own use case. It also comes with built-in SASS Support which is also good.
+
+```javascript
+    const audio = document.querySelector('audio')
+    const btn = document.querySelector('.toggle')
+    const html = document.body
+    const theme = (() => {
+        if (typeof localStorage !== "undefined" &&
+            localStorage.getItem("theme")) {
+            return localStorage.getItem("theme");
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            return "dark";
+        }
+        return "light";
+    })();
+
+    if (theme === "light") {
+        html.classList.remove("dark");
+    } else {
+        html.classList.add("dark");
+    }
+
+    
+    btn.addEventListener('click',(e) => {
+        let toggleTheme = localStorage.getItem('theme')
+        if (toggleTheme === "light") {
+            html.classList.add("dark");
+            localStorage.setItem('theme', 'dark')
+        } else {
+            html.classList.remove("dark");
+            localStorage.setItem('theme', 'light')
+        }
+        audio.play()
+        
+    })
+```
+This is the code to toggle between Light and Dark Mode, Now I know that it's much more code than if you were using something like React, But it's still very simple and understandable.
+
+2. **Server-Rendered and Highly Performant:** Astro's focus on performance was evident from the start. The framework ships No JS by default, resulting in faster page load times and improved overall performanc and user experience.
+
+2. **Great Markdown Support:** Astro provides excellent features like syntax highlighting, utility functions, and integration with rehype and remark plugins. This allows leveraging the full power of Markdown, making it easy to create and customize content using familiar syntax and tools.
+```javascript
+// Use Astro.glob() to fetch all posts, and then sort them by date.
+const posts = (await Astro.glob("./blog/*.{md,mdx}")).sort(
+	(a, b) =>
+		new Date(b.frontmatter.pubDate).valueOf() -
+		new Date(a.frontmatter.pubDate).valueOf()
+);
+```
+<br />
+
+```md
+---
+layout: "../../layouts/BlogPost.astro"
+title: 'What is MVC Architecture in NodeJS'
+pubDate: 'June 23 2022'
+description: 'How do I use this architecture to structure my Backend Projects'
+heroImage: '/images/nodejs.webp'
+tags : 'nodejs javascript expressjs '
+icon : '/images/nodejs.ico'
+
+---
+```
+
+The Above code is all we need to get the data from our markdown files including the frontmatter, slugs and reading time with syntax highlighting without any additional packages, configuration or any other hassle. It just works.
+Now compare this with it's alternative NextJS code and see the difference.
+Minimum code with Maximum Results. That's Astro for you.
+2. **File Based Routing :** Just like NextJS works with `.js` files through it's `pages` folder, Astro does the same for `.md or .mdx` files in it's `pages` folder. Simply creating a file makes it a page, providing a convenient and intuitive way to organize content.
+
+2. **Bring Your Own Framework :** Now I haven't used this feature for this blog, but if you don't want to BREAKUP with your Favourite Framework, you can bring it Onboard and Astro won't mind. It's very understanding of Developer's feeling for their Favourite framework. You can write your components with them and astro just converts them to static html components and if you want interactivity, you can easily Lazy load them using directives like `client:load` etc.
+
+
+## Conclusion
+Migrating my Next.js blog to Astro was a rewarding experience. The framework's developer experience, performance optimizations, and customization options impressed me from the start. By taking the time to understand Astro's concepts and following the migration steps, I successfully transformed my blog into a highly performant and customizable static site.
+If you're considering migrating your blog or website to Astro, I encourage you to check out [Astro.dev](https://docs.astro.build/en/getting-started/) as now they have also added the `Web Transitions` and `Collections` API in their latest Version (We'll talk about these later). The Astro documentation and real-world examples will guide you through the process and help you unlock the full potential of this exciting framework.
+Remember, learning something new can be challenging, but with patience and practice, you'll be able to make wiser decisions and create exceptional stuff. Emphasize performance, prioritize user experience, and enjoy the journey of exploring different possibilites and approaches to solve Problems.
+
+Happy migrating and happy coding!

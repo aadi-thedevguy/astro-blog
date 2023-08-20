@@ -30,7 +30,9 @@ const {
 			<header class="blog-header">
 				<h1>{title}</h1>
 				<p>Published on {pubDate}</p>
-				<img src={heroImage} alt="main" />
+				{heroImage?.length > 0 &&
+					<img src={heroImage } alt="main" />
+				}
 			</header>
 			<article class="content">
 				<slot />
