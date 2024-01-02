@@ -1,13 +1,14 @@
----
-const today = new Date();
----
 
 <footer>
-	<p>Copyright &copy;  {today.getFullYear()}  <span>
+	<p>Copyright &copy; {new Date().getFullYear()}  <span>
 		<a href='https://thedevguy.in' target="_blank" rel="noreferrer">
     TheDevGuy. </a></span>  All Rights Reserved.</p>
 </footer>
 <style>
+
+  footer {
+    margin-top: 2rem;
+  }
 	 p {
       font-family: 'Nunito', sans-serif;
       line-height: 1.2;

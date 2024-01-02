@@ -25,7 +25,29 @@ The sole purpose of a Model is to interact (query/store) to the Database from yo
 
 Basically storing your app data to a database with the help of Schema (the structure in which the data should be stored) generation is done by the Model Files.
 
-![Code Snippet](https://pbs.twimg.com/media/FPYc2P0VcAIaDnY?format=jpg&name=small)
+```javascript
+// models/goal.js
+
+const mongoose = require('mongoose');
+
+// save our data in our database according to our given schema structure
+const goalschema = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+  },
+  text1: {
+    type: String,
+    required: [true, 'Please Add a Text Value']
+  }
+}, {
+  timestamps: true
+});
+
+module.exports = mongoose.model('Goal', goalschema);
+
+```
 
 ## 2. VIEW :
 The user doesn't care about what your app does behind the scenes.
@@ -47,10 +69,34 @@ In an Express environment, these files work on the principles of taking a reques
 
 We can also extract the logic of these files in a seperate Controller file which processes all the computation and logic of our app. This is basically a good Coding practice to keep our code concise , clean and Reusable.
 
-![Code Snippet](https://pbs.twimg.com/media/FPYc3sCVUAELb-W?format=jpg&name=small)
+```javascript
+// Logic/function to run when someone hits the below route
 
-In the below picture, our Route File runs the Controller function called *Login* and Returns data whenever our login API endpoint gets hit.
+// Description  Get Goals
+// Route        GET /api/goals
+// Access       Private
 
-![Code Snippet](https://pbs.twimg.com/media/FPYc2zmVUAUZFAt?format=jpg&name=small)
+const getGoals = asyncHandler( async (reg,res) => {
+
+    const goals = await Goal.find({ user : req.user.id })
+    res.status(200).json(goals)
+})
+```
+
+In the below snippet, our Route File runs the Controller function called *Login* and Returns data whenever our login API endpoint gets hit.
+
+```javascript
+  const express - nequire("express")
+  const router - express.Router()
+
+  const {login, dashboard} = require("../controllers/main")
+  const authmiddleware = require("../middleware/auth")
+
+// send the below response for our user to view when they hit the below Endpoint
+router.route("/dashboard").get(authhiddleware, dashboard)
+router.route("/login").post(login)
+
+module.exports = router
+```
 
 *I hope this blog gave you some basic Ideas of the practical meaning of the MVC architecture and what should be your approach for structuring a new Express App. Till Next Time...*

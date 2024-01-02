@@ -113,39 +113,39 @@ function closeWindow() {
 The location object provides information about the current URL and allows you to navigate to different URLs. It contains properties and methods that can be used to manipulate the browser's location.
 
 #### Properties:
-**href:** Returns the complete URL of the current page.
+- **href:** Returns the complete URL of the current page.
 
 ```javascript
 console.log(window.location.href); 
 // Output: "https://www.example.com/index.html"
 ```
 
-**host:** Returns the hostname and port number of the current page.
+- **host:** Returns the hostname and port number of the current page.
 ```javascript
 console.log(window.location.host); 
 // Output: "www.example.com"
 ```
 
-**protocol:** Returns the protocol `(http:// or https://)` of the current page.
+- **protocol:** Returns the protocol `(http:// or https://)` of the current page.
 ```javascript
 console.log(window.location.protocol); 
 // Output: "https:"
 
 ```
 
-**pathname:** Returns the path and filename of the current page.
+- **pathname:** Returns the path and filename of the current page.
 ```javascript
 console.log(window.location.pathname);
  // Output: "/index.html"
 ```
 
-**search:** Returns the query string of the current page.
+- **search:** Returns the query string of the current page.
 ```javascript
 console.log(window.location.search);
  // Output: "?id=123&category=books"
 ```
 
-**hash:** Returns the anchor part of the URL.
+- **hash:** Returns the anchor part of the URL.
 ```javascript
 console.log(window.location.hash); 
 // Output: "#section1"
@@ -154,21 +154,21 @@ console.log(window.location.hash);
 <br />
 #### Methods:
 
-**assign(url):** Loads a new document by setting the href property to the specified URL.
+- **assign(url):** Loads a new document by setting the href property to the specified URL.
 ```javascript
 function redirectToNewPage() {
   window.location.assign("https://www.example.com/newpage.html");
 }
 ```
 
-**reload():** Reloads the current document.
+- **reload():** Reloads the current document.
 ```javascript
 function reloadPage() {
   window.location.reload();
 }
 ```
 
-**replace(url):** Replaces the current document with a new one by setting the href property to the specified URL
+- **replace(url):** Replaces the current document with a new one by setting the href property to the specified URL
 ```javascript
 function replacePage() {
   window.location.replace("https://www.example.com/anotherpage.html");
