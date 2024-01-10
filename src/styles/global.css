@@ -5,6 +5,7 @@
 @layer base {
   :root[data-theme="light"] {
     /* :root { */
+      /* color : #84bcf0 */
     --bg-primary: 0 0% 100%;
     --text-primary: 0 0% 0%;
     --text-secondary: 209 78% 73%;
