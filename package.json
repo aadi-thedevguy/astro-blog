@@ -1,30 +1,38 @@
 {
-  "name": "@example/blog",
+  "name": "my-blog",
   "type": "module",
   "version": "0.0.1",
-  "private": true,
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^0.12.0",
-    "@astrojs/rss": "^1.0.3",
-    "@astrojs/sitemap": "^1.0.0",
-    "astro": "^1.6.12",
-    "mdast-util-to-string": "^3.1.0",
-    "rehype-autolink-headings": "^6.1.1",
-    "rehype-slug": "^5.1.0"
-  },
-  "devDependencies": {
-    "@astrojs/react": "^1.2.2",
+    "@astrojs/check": "^0.3.2",
+    "@astrojs/mdx": "^2.0.3",
+    "@astrojs/react": "^3.0.9",
+    "@astrojs/rss": "^4.0.1",
+    "@astrojs/sitemap": "^3.0.4",
+    "@astrojs/tailwind": "^5.0.3",
+    "@astrojs/vercel": "^6.1.0",
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
+    "astro": "^4.0.4",
+    "clipboard": "^2.0.11",
+    "mdast-util-to-string": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.7.1",
+    "react-syntax-highlighter": "^15.5.0",
     "reading-time": "^1.5.0",
-    "sass": "^1.56.1"
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-slug": "^6.0.0",
+    "tailwindcss": "^3.3.6",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/react-syntax-highlighter": "^15.5.11"
   }
 }

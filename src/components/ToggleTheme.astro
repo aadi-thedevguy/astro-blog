@@ -1,43 +1,39 @@
+---
+const theme = Astro.cookies.get("theme")?.value ?? "light";
+---
 
+<label class="relative inline-flex items-center cursor-pointer">
+  <input
+    type="checkbox"
+    id="toggle"
+    class="sr-only peer"
+    checked={theme === "dark"}
+  />
+  <div
+    class="w-11 h-6 bg-primary rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-primary after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-textPrimary after:border-primary after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"
+  >
+  </div>
+</label>
 
-<div class="toggle">
-    <div class="ball"></div>
-    
-</div>
-<audio  src="/correct.mp3"></audio>
+<audio src="/correct.mp3"></audio>
 
 <script is:inline>
-    const audio = document.querySelector('audio')
-    const btn = document.querySelector('.toggle')
-    const html = document.body
-    const theme = (() => {
-        if (typeof localStorage !== "undefined" &&
-            localStorage.getItem("theme")) {
-            return localStorage.getItem("theme");
-        }
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            return "dark";
-        }
-        return "light";
-    })();
+  const audio = document.querySelector("audio");
+  const btn = document.querySelector("#toggle");
+  const html = document.documentElement;
 
-    if (theme === "light") {
-        html.classList.remove("dark");
-    } else {
-        html.classList.add("dark");
-    }
+  btn.addEventListener("change", (e) => {
+    audio.play();
+    let theme = e.target.checked ? "dark" : "light";
+    html.setAttribute("data-theme", theme);
+    saveTheme(theme);
+  });
 
-    
-    btn.addEventListener('click',(e) => {
-        let toggleTheme = localStorage.getItem('theme')
-        if (toggleTheme === "light") {
-            html.classList.add("dark");
-            localStorage.setItem('theme', 'dark')
-        } else {
-            html.classList.remove("dark");
-            localStorage.setItem('theme', 'light')
-        }
-        audio.play()
-        
-    })
+  function saveTheme(theme) {
+    document.cookie = ""
+    const d = new Date();
+    d.setTime(d.getTime() + 365 * 86400000);
+    document.cookie = `theme=${theme};expires=${d.toUTCString()}`;
+    // document.cookie = `theme=${theme};expires=`;
+  }
 </script>

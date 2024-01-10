@@ -1,0 +1,41 @@
+---
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION,SITE_URL} from "../constants";
+import "../styles/global.css";
+// import { ViewTransitions } from "astro:transitions";
+
+const { title = "Archives of The Dev Guy",icon = "icon.png", ogImage = "main-image.png",desc = SITE_DESCRIPTION} = Astro.props;
+const theme = Astro.cookies.get("theme")?.value ?? "light";
+interface Props {
+  title?: string;
+  desc?: string;
+  icon?: string;
+  ogImage?: string;
+}
+---
+
+<!doctype html>
+<html lang="en" data-theme={theme}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={desc} />
+    
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc}>
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={SITE_URL}>
+    <link rel="shortcut icon" href={"/images/" + icon} type="image/x-icon" />
+    <title>{SITE_TITLE} - {title}</title>
+    <!-- <ViewTransitions /> -->
+  </head>
+  <body class="overflow-x-hidden font-Inter text-primary bg-primary">
+    <Navbar />
+    <section class="container mx-auto max-w-screen-xl mt-10 px-8">
+      <slot />
+    </section>
+
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,36 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Tags from "../../components/Tags.astro";
+import { getEntry } from 'astro:content';
+import { formatDate } from "../../utils";
+
+const { slug } = Astro.params;
+
+if(slug === undefined) {
+  throw new Error('Slug is required');
+}
+
+const entry = await getEntry('blog', slug);
+
+if(entry === undefined) {
+  return Astro.redirect('/404');
+}
+
+const { Content, remarkPluginFrontmatter } = await entry.render();
+---
+
+<MainLayout title={entry.data.title} icon={entry.data.icon} ogImage={entry.data.image} desc={entry.data.description}>
+  <article class="text-textPrimary">
+    <div class="w-full lg:w-9/12 mx-auto">
+    <h1 class="text-4xl font-bold mb-3"> {entry.data.title}</h1>
+    <h3 class="text-lg mb-3">{remarkPluginFrontmatter.minutesRead} | {formatDate(entry.data.pubDate)}</h3>
+    <Tags tags={entry.data.tags} />
+  </div>
+    <img src={'/images/' + entry.data.image} alt="Article Image" class="w-full lg:w-9/12 object-cover aspect-video h-auto rounded-xl my-6 mx-auto" />
+    <section class="mx-auto prose md:prose-xl lg:prose-2xl dark:prose-invert prose-li:list-none prose-li:relative prose-li:before:absolute prose-li:before:-left-5 prose-li:before:content-['👉']">
+      <Content />
+    </section>
+  <a href="/articles" class="inline-block border border-secondary rounded-3xl px-4 py-2 mt-8 hover:text-textSecondary">Back To Articles</a>
+
+  </article>
+</MainLayout>

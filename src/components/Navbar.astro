@@ -1,25 +1,26 @@
 ---
+import { Image } from "astro:assets";
+import logo from "../images/logo.svg";
 import ToggleTheme from "./ToggleTheme.astro";
-
 ---
 
-<nav class="navbar">    
+<!-- <nav class="text-textPrimary bg-gradient-to-r from-[#e5f7e1] to-[#d1d7f8] shadow-md shadow-black/10"> -->
+<nav class="text-accent rainbow shadow-md shadow-black/10">
+<nav class="shadow-md shadow-black/10">
+  <div
+    class="max-w-screen-xl font-medium flex items-center justify-between mx-auto p-4"
+  >
+    <a href="/">
+      <Image src={logo} alt="Logo" width={50} height={40} />
+    </a>
+    <div class="flex gap-4 items-center">
 
-    <ul class="navbarLinks">
-      <li>
-
-        <a href='https://thedevguy.in' target="_blank" rel="noreferrer" class="navbarLogo" >
-            <img src="/images/logo.svg" alt="logo" width={50} height={40} />
-        </a>
-      </li>
-        <li>
-            <a href='/'>
-              All Blogs
-            </a>  
-        </li>
-        <li>
-            <ToggleTheme />
-        </li>
-     
-    </ul>
+      <a
+        href="/articles"
+        class="block py-2 px-3 rounded md:p-0 hover:opacity-70"
+        >All Articles</a
+      >
+      <ToggleTheme />
+    </div>
+  </div>
 </nav>

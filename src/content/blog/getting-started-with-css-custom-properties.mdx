@@ -1,0 +1,176 @@
+---
+author: 'Aditya Khare'
+slug: 'css-custom-properties'
+title: 'Getting started with CSS Custom Properties'
+pubDate: 2023-02-13
+description: 'Do you know that you can use Variables in Vanilla CSS without any preprocessors like SASS or LESS.'
+image: 'custom-variables.webp'
+icon : 'css_favicon.ico'
+tags : ['css','css-tips']
+---
+
+Do you know that you can use Variables in Vanilla CSS without any preprocessors like SASS or LESS?
+Let's Find out How...
+
+But first, the question arises Why should you even use these Custom properties when You have Preprocessors?
+Well, Let's Answer that
+
+
+## Why use CSS Custom Properties over SASS variables
+
+1. Learning SASS for only using Variables is much of an effort, so why do it.
+
+2. No need for a compiler to convert your SASS files into normal CSS.
+
+3. Native, therefore fast and browser compatible.
+
+Now, let's understand What the heck are these CSS Custom Properties.
+
+## What are Custom Properties
+If you ever used a Programming language before, you know what a variable is.
+If not, A variable is something that is defined once, usually at the top of the code, and then can be referenced later anywhere in the code.
+
+So Basically, the custom properties are the variables of CSS which minimizes code repetition and saves time. Custom properties are very helpful in large projects.
+
+In normal CSS you have to redefine a property like colour or font repetitively for different elements and it is a hazard.
+
+```css
+
+/* What you SHOULDN'T do */
+
+body {
+    background : #333;
+    color : white;
+}
+
+h1 {
+    font-size : 3rem;
+}
+
+.element {
+    transition : transform 0.2s linear;
+}
+
+.element:hover {
+    transform : scale(1.2) rotate(45deg);
+}
+```
+
+Well not anymore, 
+Define once, use anywhere from now on.
+A custom property is written with a preceding `--` sign before its name with no spaces and called(used) with the `var()` keyword.
+
+```css
+
+/* What you SHOULD do */
+
+:root {
+    --bg-clr-primary : rgb(80,125,125);
+    --text-clr-primary : white;
+    --font-lg: 3rem;
+    --scale : 1.2;
+    --rotate : 45deg;
+    --full-screen : 100vw;
+}
+
+body {
+    background : var(--bg-clr-primary);
+    color : var(--text-clr-primary);
+}
+
+h1 {
+    font-size : var(--font-lg);
+}
+
+.element {
+    transition : transform 0.2s linear;
+}
+
+.element:hover {
+    transform : var(--scale) var(--rotate);
+}
+```
+
+## Features of CSS Variables
+
+1. **Flexibility:**
+One great benefit of Custom properties is that you can structure and combine different variables for more flexibility. 
+
+Any value you can think of can be converted into a variable.
+
+```css
+/* combine more than one custom properties together to give your more control */
+
+section {
+    --r : 220;
+    --g : 150;
+    --b : 94;
+}
+
+section div {
+    background-color : rgb(var(--r), var(--g), var(--b))
+}
+```
+
+
+2. **Redefining Your Variables:**
+An Environment is like a world within itself for a code block.
+The Code within an environment doesn't care anything about anything outside its environment and obeys the rules of its own Environment.
+
+With CSS variables, You can also redefine or change the value of a custom property with a new value within a specific element and it will work with that value in its local environment instead of the globally defined custom property.
+
+```css
+
+/* Redefine custom properties anywhere you want */
+
+/* create your own color scheme */
+section {
+    --r : 220;
+    --g : 150;
+    --b : 94;
+}
+
+section div {
+    background-color : rgb(var(--r), var(--g), var(--b))
+}
+
+/* THIS WORKS */
+
+section .container {
+    --g : 139;
+    --b : 53;
+    background-color : rgb(var(--r), var(--g), var(--b))
+}
+```
+
+1. **Using `calc()` function with your variables:**
+The `calc()` function can perform basic mathematical operations in CSS.
+Make your whole layout responsive by using it with predefined custom properties which helps in structuring the sizes of your elements.
+
+
+```css
+
+/* Calculate and adjust your layout sizes */
+/* With the help of predefined properties and calc() function */
+
+h1 {
+    font-size : var(--font-lg);
+}
+
+/* All size units just works with calc() */
+h2 {
+    font-size : calc(var(--font-lg) / 2);
+}
+
+.parent {
+    width : var(--full-screen);
+}
+
+.child {
+    width : calc(var(--full-screen) - 6rem)
+}
+```
+
+#### This blog was just an introduction to the awesomeness of CSS variables. 
+
+There are a whole lot of things you can achieve with the custom properties, with your creativity, so keep practising with them.
