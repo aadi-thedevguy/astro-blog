@@ -1,29 +1,62 @@
 ---
 import MainLayout from "../../../layouts/MainLayout.astro";
 import ArticleCard from "../../../components/ArticleCard.astro";
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import bookshelf from "../../../images/bookshelf.png";
 import { capitalize } from "../../../utils";
 
 const { tag } = Astro.params;
 
-if(tag === undefined) {
-  throw new Error('Tag is required');
+if (tag === undefined) {
+  throw new Error("Tag is required");
 }
 
-const allBlogArticles: CollectionEntry<'blog'>[] = (await getCollection('blog'))
-  .sort((a:CollectionEntry<'blog'>, b:CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allBlogArticles: CollectionEntry<"blog">[] = (
+  await getCollection("blog")
+).sort(
+  (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 
-const tagArticles = allBlogArticles.filter(article => article.data.tags.includes(tag));
+const tagArticles = allBlogArticles.filter((article) =>
+  article.data.tags.includes(tag)
+);
 ---
 
 <MainLayout>
-  <a href="/articles" class="inline-block text-textPrimary border border-secondary rounded-3xl px-4 py-2 mt-8 hover:text-textSecondary">Back To Articles</a>
+  <a
+    href="/articles"
+    class="inline-block text-textPrimary border border-secondary rounded-3xl px-4 py-2 mt-8 hover:text-textSecondary"
+    >Back To Articles</a
+  >
 
-<h1 class="text-2xl pb-3">#{capitalize(tag)}</h1>
-<main class="w-11/12 mx-auto flex flex-wrap gap-4 mt-10 justify-center">
-  {tagArticles.map(article => (
-    <ArticleCard article={article} />
-  ))}
-</main>
+  <h1 class="text-3xl pb-3 my-6 text-center text-textPrimary">
+    #{capitalize(tag)}
+  </h1>
+  <main class="w-11/12 mx-auto flex flex-wrap gap-4 mt-10 justify-center">
+    {
+      tagArticles.length > 0 ? (
+        tagArticles.map((article) => <ArticleCard article={article} />)
+      ) : (
+        <div>
+          <h1 class="text-3xl pb-3 text-center text-textSecondary">
+            Uh, Oh!
+          </h1>
+          <Image
+            src={bookshelf}
+            alt="error"
+            height={250}
+            width={250}
+            class="mx-auto"
+          />
+
+          <h4 class="text-xl text-center font-inter text-textPrimary my-6">
+            No Articles Found for the given Category
+          </h4>
+        </div>
+      )
+    }
+  </main>
 </MainLayout>

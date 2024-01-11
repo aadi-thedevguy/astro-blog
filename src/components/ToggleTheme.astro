@@ -2,7 +2,8 @@
 const theme = Astro.cookies.get("theme")?.value ?? "light";
 ---
 
-<label class="relative inline-flex items-center cursor-pointer">
+<label for="toggle" class="relative inline-flex items-center cursor-pointer">
+  <span class="sr-only">switch theme</span>
   <input
     type="checkbox"
     id="toggle"
@@ -30,10 +31,13 @@ const theme = Astro.cookies.get("theme")?.value ?? "light";
   });
 
   function saveTheme(theme) {
-    document.cookie = ""
-    const d = new Date();
-    d.setTime(d.getTime() + 365 * 86400000);
-    document.cookie = `theme=${theme};expires=${d.toUTCString()}`;
-    // document.cookie = `theme=${theme};expires=`;
-  }
+  // Create a date string for cookie expiration one year from now
+  const d = new Date();
+  d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+  const expires = `expires=${d.toUTCString()}`;
+  
+  // Set the cookie with the path attribute to ensure it's available across all pages
+  document.cookie = `theme=${theme};${expires};path=/`;
+}
+
 </script>

@@ -1,51 +1,80 @@
 ---
 import { formatDate } from "../utils";
 import type { CollectionEntry } from "astro:content";
-import Tags from "./Tags.astro";
 
-const { article } = Astro.props;
+const { article, featured } = Astro.props;
 
 interface Props {
   article: CollectionEntry<"blog">;
+  featured?: boolean;
 }
 ---
 
-
 <article
-  class="w-full lg:w-9/12 min-h-[200px] rainbow rounded-lg overflow-hidden shadow-lg p-6"
+  class:list={[
+    "w-full mb-8 shadow-md group relative transition-all duration-400 min-h-[300px] rounded-lg",
+    { "lg:w-9/12": !featured },
+  ]}
 >
-  <!-- <img
-        src={'/images/' + article.data.image}
-        alt="Article Image"
-        class="w-full h-48 object-cover hover:opacity-75 transition duration-300 ease-in-out"
-      /> -->
+  <a href={"/articles/" + article.slug}>
+    <!-- hidden div for hover effect -->
+    {
+      featured && (
+        <p class="text-textPrimary font-semibold italic font-Poppins">
+          Featured Article
+        </p>
+      )
+    }
+    {
+      !featured && (
+        <div class="absolute -inset-0.5 z-10 bg-textSecondary rounded-lg transition-opacity ease-out duration-300 opacity-0 group-hover:opacity-100" />
+      )
+    }
+    <div
+      class="rainbow absolute w-full h-full p-6 z-20 rounded-lg flex flex-1 flex-col md:flex-row overflow-hidden"
+    >
+      <!-- container 1 -->
+      <div class="flex flex-col justify-center pr-3 md:w-1/2">
+        <h2 class="text-2xl font-semibold mb-2 text-accent">
+          {article.data.title}
+        </h2>
+        <p class="text-accent text-base mb-4">
+          {formatDate(article.data.pubDate)}
+        </p>
+        {
+          !featured && (
+            <p class="text-gray-700 text-base mb-4 hidden lg:block">
+              {article.data.description}
+            </p>
+          )
+        }
 
-  <h2 class="text-2xl font-semibold mb-2 text-accent">
-    <a href={"/articles/" + article.slug}> {article.data.title}</a>
-  </h2>
-  <p class="text-accent text-base mb-4">
-    {formatDate(article.data.pubDate)} 
-  </p>
-  <p class="text-gray-700 text-base mb-4 hidden lg:block">
-    {article.data.description}
-  </p>
-  <Tags tags={article.data.tags} />
-  <p class="my-4 ml-2 text-textSecondary">
-    <a href={"/articles/" + article.slug} class="hover:opacity-70">
-      Read More
-      <svg
-        class="inline text-accent"
-        width="20"
-        height="15"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        ><line x1="5" y1="12" x2="19" y2="12"></line><polyline
-          points="12 5 19 12 12 19"></polyline></svg
-      >
-    </a>
-  </p>
+        <!-- <Tags tags={article.data.tags} /> -->
+        <p class="my-4 ml-2 text-accent">
+          Read More
+          <svg
+            class="inline text-accent group-hover:translate-x-2 duration-200 transition-transform"
+            width="20"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><line x1="5" y1="12" x2="19" y2="12"></line><polyline
+              points="12 5 19 12 12 19"></polyline></svg
+          >
+        </p>
+      </div>
+      <!-- image container -->
+      <div class="md:w-1/2">
+        <img
+          src={"/images/" + article.data.image}
+          alt="Article"
+          class="aspect-square w-full h-full rounded-md object-center"
+        />
+      </div>
+    </div>
+  </a>
 </article>
