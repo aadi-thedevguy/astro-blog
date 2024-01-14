@@ -28,6 +28,6 @@ export default defineConfig({
       }]
     }]]
   }), preact()],
-  output: "server",
+  output: "hybrid",
   adapter: vercel()
 });
