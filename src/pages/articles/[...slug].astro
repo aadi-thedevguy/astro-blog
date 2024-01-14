@@ -1,39 +1,9 @@
 ---
-export const prerender = false
 import MainLayout from "../../layouts/MainLayout.astro";
 import Tags from "../../components/Tags.astro";
 import { getEntry } from "astro:content";
-import { db } from "../../firebase";
-import { collection, getDocs, getDoc, setDoc,doc, query, where } from "firebase/firestore";
 
 const { slug } = Astro.params;
-const url = Astro.request.url;
-
-async function createView() {
- try {
-   const response = await fetch("https://api.ipify.org?format=json");
-   const data = await response.json();
-   const user_ip : string = data.ip || "";
-   const docId = `${user_ip}-${slug}`; // Combine user IP and article URL to form a unique ID
-
-   const docRef = doc(db, "views", docId);
-   const docSnap = await getDoc(docRef);
-
-   if (docSnap.exists()) {
-     console.log("This user has been viewed this post");
-   } else {
-     if (typeof user_ip === "string") {
-       await setDoc(docRef, {
-         user_ip,
-         article: url,
-       });
-     }
-   }
- } catch (error) {
-   console.error(error);
- }
-}
-
 
 if (slug === undefined) {
   throw new Error("Slug is required");
@@ -45,10 +15,6 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-await createView();
-const q = query(collection(db, "views"), where("article", "==", url));
-const snapshot = await getDocs(q);
-const count = snapshot.size;
 const { Content, remarkPluginFrontmatter } = await entry.render();
 ---
 
@@ -66,12 +32,13 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
           {remarkPluginFrontmatter.minutesRead} |
         </span>
         <div
-          title="Views"
-          class="w-2 h-7 text-textSecondary flex flex-col items-center fadeUp"
-        >
+          id="views-container"
+          class="w-2 h-7 text-textSecondary flex flex-col items-center"
+          >
           <span>0</span>
-          <span>{count}</span>
+          <span id="views"></span>
         </div>
+        <span class="text-textSecondary">Views</span>
         <svg
           class="w-5 h-5 text-textSecondary"
           fill="none"
@@ -91,7 +58,6 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
             d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
         </svg>
 
-        <span class="text-textSecondary">Views</span>
       </div>
       <Tags tags={entry.data.tags} />
     </div>
@@ -111,4 +77,38 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
       >Back To Articles</a
     >
   </article>
+
+  <script is:inline>
+    const views = document.querySelector("#views");
+    const container = document.querySelector("#views-container");
+
+    window.addEventListener("load", async () => {
+      await fetchViewCount()
+    })
+
+    async function fetchViewCount() {
+      const data = {
+        url : window.location.href,
+        slug : window.location.pathname.split('/')[2]
+      }
+      try {
+        const response = await fetch("/api/views", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          views.textContent = data.count;
+          container.classList.add("fadeUp");
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  </script>
 </MainLayout>
