@@ -3,7 +3,6 @@ dist/
 # generated types
 .astro/
 .vercel/
-
 # dependencies
 node_modules/
 
@@ -13,6 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+firebase-credentials.json
 
 # environment variables
 .env

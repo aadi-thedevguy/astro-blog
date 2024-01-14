@@ -8,7 +8,7 @@
       /* color : #84bcf0 */
     --bg-primary: 0 0% 100%;
     --text-primary: 0 0% 0%;
-    --text-secondary: 209 78% 73%;
+    --text-secondary: 209 88% 50%;
     --accent: 208 43% 30%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -44,6 +44,16 @@ html {
 
 .rainbow {
   background: linear-gradient(45deg, #e5f7e1, #d1d7f8);
+}
+
+.fadeUp {
+  animation: fadeUp 500ms ease-in 500ms forwards;
+}
+
+@keyframes fadeUp {
+  to {
+     transform : translateY(-1.75rem);
+  }
 }
 
 /* scrollbar */
