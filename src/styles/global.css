@@ -47,7 +47,7 @@ html {
 }
 
 .fadeUp {
-  animation: fadeUp 500ms ease-in forwards;
+  animation: fadeUp 500ms ease-in 1s forwards;
 }
 
 @keyframes fadeUp {

@@ -43,7 +43,7 @@ export default defineConfig({
     }),
     preact(),
   ],
-  output: "hybrid",
+  output: "server",
   adapter: vercel({
     edgeMiddleware: true,
   }),
