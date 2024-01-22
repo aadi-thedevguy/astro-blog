@@ -13,21 +13,38 @@ export default defineConfig({
   site: "https://blog.thedevguy.in",
   markdown: {
     remarkPlugins: [remarkReadingTime],
-    extendDefaultPlugins: true
+    extendDefaultPlugins: true,
   },
-  integrations: [tailwind(), sitemap(), mdx({
-    rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, {
-      behavior: "wrap",
-      content: node => [{
-        type: 'element',
-        tagName: 'span',
-        children: [{
-          type: 'text',
-          value: node.children[0].value
-        }]
-      }]
-    }]]
-  }), preact()],
+  integrations: [
+    tailwind(),
+    sitemap(),
+    mdx({
+      rehypePlugins: [
+        rehypeSlug,
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: "wrap",
+            content: (node) => [
+              {
+                type: "element",
+                tagName: "span",
+                children: [
+                  {
+                    type: "text",
+                    value: node.children[0].value,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      ],
+    }),
+    preact(),
+  ],
   output: "hybrid",
-  adapter: vercel()
+  adapter: vercel({
+    edgeMiddleware: true,
+  }),
 });
