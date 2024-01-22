@@ -1,5 +1,5 @@
 ---
-// export const prerender = false;
+export const prerender = false;
 import MainLayout from "../../layouts/MainLayout.astro";
 import Tags from "../../components/Tags.astro";
 import { getEntry } from "astro:content";
@@ -76,7 +76,7 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
           title="Views"
           class="h-7 text-textSecondary flex flex-col items-center fadeUp"
         >
-          <span>0</span>
+          <span class="block h-5 w-2"></span>
           <span>{count}</span>
         </div>
         <svg

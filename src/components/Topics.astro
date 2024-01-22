@@ -7,8 +7,8 @@ const topics = [
   "performance",
   "react",
   "programming",
-  "next.js",
-  "cloud"
+  "nextjs",
+  "cloud",
 ];
 ---
 
@@ -17,16 +17,18 @@ const topics = [
     Categories
   </h1>
 
-  <div class="flex flex-wrap justify-center gap-4 ">
+  <div class="flex flex-wrap justify-center gap-4">
     {
       topics.map((tag: string) => (
-        <button
-          class={
-            "px-4 py-2 border border-textSecondary text-textPrimary font-Inter capitalize rounded-lg text-xl hover:bg-textSecondary/50 transition-colors duration-200"
-          }
-        >
-          <a href={"/articles/tag/" + tag}>{tag}</a>
-        </button>
+        <a href={"/articles/tag/" + tag}>
+          <div
+            class={
+              "px-4 py-2 border border-textSecondary text-textPrimary font-Inter capitalize rounded-lg text-xl hover:bg-textSecondary/50 transition-colors duration-200"
+            }
+          >
+            {tag}
+          </div>
+        </a>
       ))
     }
   </div>
