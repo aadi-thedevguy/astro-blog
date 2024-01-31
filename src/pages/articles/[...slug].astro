@@ -60,7 +60,7 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
 
 <MainLayout
   title={entry.data.title}
-  icon={entry.data.icon}
+  icon={entry.data.icon || entry.data.image}
   ogImage={entry.data.image}
   desc={entry.data.description}
 >
@@ -115,4 +115,46 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
       >Back To Articles</a
     >
   </article>
+
+  <script is:inline>
+    const preTags = document.querySelectorAll("pre");
+
+    window.addEventListener("DOMContentLoaded", () => {
+      // Iterate over each pre tag
+      preTags.forEach((preTag, index) => {
+        // Add a unique id to each pre tag
+        preTag.id = `code-snippet-${index}`;
+        preTag.className = "relative group transition duration-200";
+
+        // Append the copy button after each pre tag
+        const div = document.createElement("div");
+        div.className =
+          "flex justify-center cursor-pointer absolute right-2 -top-3 md:-top-8 z-10 opacity-0 group-hover:opacity-70";
+        div.innerHTML = `
+          <img
+          class="block w-7 h-7"
+          src="/mockups/clipboard.svg"
+          alt="code-snippet"
+          data-copy="code"
+          id=${index}
+          title="Copy To Clipboard"
+        />`;
+        preTag.appendChild(div);
+      });
+
+      const btns = document.querySelectorAll('[data-copy="code"]');
+
+      btns.forEach((copyButton) => {
+        copyButton.addEventListener("click", async (e) => {
+          const index = e.target.id;
+          const codeBlock = document.getElementById(`code-snippet-${index}`);
+          if (codeBlock) {
+            window.navigator &&
+              (await navigator.clipboard.writeText(codeBlock.innerText));
+            e.target.src = "/mockups/tick.svg";
+          }
+        });
+      });
+    });
+  </script>
 </MainLayout>

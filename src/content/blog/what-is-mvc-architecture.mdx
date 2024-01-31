@@ -9,6 +9,8 @@ tags : ["node","javascript","expressjs"]
 icon : 'nodejs.ico'
 
 ---
+import { Image } from 'astro:assets';
+import code from '../../images/mvc.png';
 
 **It's been a long since I wrote a blog so I thought let's try something not everyone talks about. The Importance of Best practices and Design Principles for a Web Developer.This will be my first blog regarding backend development. Let's get Started....**
 
@@ -58,7 +60,7 @@ The View files are primarily your HTML, CSS and JS files but can also contain ot
 In Node JS Express Framework, these files go in the Public folder which gets delivered to the Browser by the Server as a response whenever a certain request is made.
 The general purpose of our Views is to display the data in a user friendly manner to the Client (Web Browser).
 
-![Code Snippet](https://firebasestorage.googleapis.com/v0/b/portfolio-52b82.appspot.com/o/Screenshot%20(1).png?alt=media&token=26bb980d-380d-4137-a8b0-d4ae5769f451)
+<Image src={code} alt="Code Snippet"/>
  
 ## 3. CONTROLLER :
 This is what Controls the main logic of our App.
