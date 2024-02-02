@@ -25,7 +25,7 @@ async function createView() {
 
     const docRef = doc(db, "views", docId);
     const docSnap = await getDoc(docRef);
-
+    console.log("called")
     if (docSnap.exists()) {
       console.log("This user has been viewed this post");
     } else {
@@ -33,6 +33,7 @@ async function createView() {
         await setDoc(docRef, {
           user_ip,
           article: url,
+          date : new Date().toLocaleDateString()
         });
       }
     }
@@ -51,7 +52,9 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-await createView();
+if (import.meta.env.MODE === "production") {
+  await createView();
+}
 const q = query(collection(db, "views"), where("article", "==", url));
 const snapshot = await getDocs(q);
 const count = snapshot.size;
@@ -75,7 +78,7 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
           title="Views"
           class="h-7 text-textSecondary flex flex-col items-center fadeUp"
         >
-          <span>{count}</span>
+          <span>0</span>
           <span>{count}</span>
         </div>
         <svg
@@ -124,6 +127,7 @@ const { Content, remarkPluginFrontmatter } = await entry.render();
       preTags.forEach((preTag, index) => {
         // Add a unique id to each pre tag
         preTag.id = `code-snippet-${index}`;
+        preTag.removeAttribute('tabindex');
         preTag.className = "relative group transition duration-200";
 
         // Append the copy button after each pre tag
